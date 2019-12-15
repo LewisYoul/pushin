@@ -1,32 +1,60 @@
 import Phaser from "phaser";
-import logoImg from "./assets/logo.png";
 
-const config = {
-  type: Phaser.AUTO,
-  parent: "phaser-example",
-  width: 800,
-  height: 600,
-  scene: {
-    preload: preload,
-    create: create
+const height = 800;
+const width = 480;
+const title = 'Boing!';
+
+const half_height = height / 2;
+const half_width = width / 2;
+const player_speed = 6;
+const max_ai_speed = 6;
+
+class Bat extends Phaser.GameObjects.Sprite {
+  constructor(scene, x, y, key) {
+    super(scene, x, y, key);
+    scene.add.existing(this);
+    this.speed = 6;
   }
-};
 
-const game = new Phaser.Game(config);
 
-function preload() {
-  this.load.image("logo", logoImg);
+  update(keys) {
+    let movement = 0;
+    if (keys.up.isDown) { movement = -this.speed; };
+    if (keys.down.isDown) { movement = this.speed; };
+
+    this.y = Math.min(400, Math.max(80, this.y + movement))
+  }
 }
 
-function create() {
-  const logo = this.add.image(400, 150, "logo");
+var config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 480,
+    scene: {
+        preload: preload,
+        create: create,
+        update: update
+    }
+};
 
-  this.tweens.add({
-    targets: logo,
-    y: 450,
-    duration: 2000,
-    ease: "Power2",
-    yoyo: true,
-    loop: -1
-  });
+var game = new Phaser.Game(config);
+
+function preload () {
+    this.load.image('table', 'src/assets/images/table.png');
+    this.load.image('bat00', 'src/assets/images/bat00.png');
+    this.load.image('bat10', 'src/assets/images/bat10.png');
+}
+
+function create () {
+    this.add.image(400, 240, 'table');
+    this.bat1 = new Bat(this, 40, 240, 'bat00')
+    this.bat2 = new Bat(this, 760, 240, 'bat10')
+    this.bats = [this.bat1, this.bat2]
+
+    this.keys = this.input.keyboard.createCursorKeys();
+    console.log('scene', this.keys)
+}
+
+function update () {
+  this.bats.forEach(bat => { bat.update(this.keys) })
 }
