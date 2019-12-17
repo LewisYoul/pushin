@@ -14,9 +14,18 @@ class Ball extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, key);
     scene.add.existing(this)
     scene.physics.add.existing(this)
-    this.setVelocityX(-100)
+    this.setVelocity(-200, -200)
     this.setCollideWorldBounds(true);
+    this.setBounce(1)
     this.setSize(width, height)
+  }
+
+  update () {
+    if (this.body.x < this.scene.physics.world.bounds.left) {
+      console.log('PLAYER 2 WINS!')
+    } else if (this.body.x > this.scene.physics.world.bounds.right) {
+      console.log('PLAYER 1 WINS!')
+    }
   }
 }
 
@@ -28,6 +37,7 @@ class Bat extends Phaser.Physics.Arcade.Sprite {
     this.speed = 6;
     this.anchor
     this.setCollideWorldBounds(true);
+    this.setImmovable(1)
     this.setSize(width, height)
   }
 
@@ -49,7 +59,7 @@ var config = {
       default: 'arcade',
       arcade: {
           gravity: { y: 0 },
-          debug: true
+          debug: false
       }
     },
     scene: {
@@ -69,7 +79,6 @@ function preload () {
 }
 
 function create () {
-  console.log('fiz', this.physics)
     this.add.image(400, 240, 'table');
     this.bat1 = new Bat(this, 40, 240, 'bat00')
     this.bat2 = new Bat(this, 760, 240, 'bat10')
@@ -80,9 +89,12 @@ function create () {
     this.physics.add.collider(this.bat2, this.ball);
 
     this.keys = this.input.keyboard.createCursorKeys();
-    console.log('scene', this.keys)
-}
+
+    this.physics.world.checkCollision.left = false;
+    this.physics.world.checkCollision.right = false;
+  }
 
 function update () {
+  this.ball.update()
   this.bats.forEach(bat => { bat.update(this.keys) })
 }
