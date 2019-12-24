@@ -12,13 +12,16 @@ export default class Play extends Phaser.Scene {
     this.load.image('left_bat', 'src/assets/images/bat00.png');
     this.load.image('right_bat', 'src/assets/images/bat10.png');
     this.load.image('ball', 'src/assets/images/ball.png');
-    this.load.image('digit00', 'src/assets/images/digit00.png');
+
+    for (let i = 0; i < 10; i++) {
+      this.load.image(`digit0${i}`, `src/assets/images/digit0${i}.png`);
+    }
   }
 
   create () {
       this.add.image(400, 240, 'table');
-      this.add.image(340, 83, 'digit00');
-      this.add.image(460, 83, 'digit00')
+      this.player1Score = this.add.image(340, 83, 'digit00');
+      this.player2Score = this.add.image(460, 83, 'digit00')
       this.bat1 = new Bat(this, 40, 240, 'left_bat')
       this.bat2 = new Bat(this, 760, 240, 'right_bat')
       this.ball = new Ball(this, 400, 240, 'ball')
@@ -36,9 +39,15 @@ export default class Play extends Phaser.Scene {
 
   update () {
     if (this.ball.isOutLeft()) {
-      this.bat1.score += 1;
-    } else if (this.ball.isOutRight()) {
       this.bat2.score += 1;
+      this.player2Score.destroy()
+      this.player2Score = this.add.image(460, 83, `digit0${this.bat2.score}`);
+      this.ball.kickOff()
+    } else if (this.ball.isOutRight()) {
+      this.bat1.score += 1;
+      this.player1Score.destroy()
+      this.player1Score = this.add.image(340, 83, `digit0${this.bat1.score}`);
+      this.ball.kickOff()
     } else {
       this.ball.update()
       this.objects.forEach(object => object.update(this.keys));
