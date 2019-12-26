@@ -22,4 +22,8 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
 
     this.y = Math.min(400, Math.max(80, this.y + movement))
   }
+
+  isWinner() {
+    return this.score >= 10;
+  }
 }

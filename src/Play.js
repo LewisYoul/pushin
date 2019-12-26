@@ -42,11 +42,13 @@ export default class Play extends Phaser.Scene {
       this.bat2.score += 1;
       this.player2Score.destroy()
       this.player2Score = this.add.image(460, 83, `digit0${this.bat2.score}`);
+      if (this.bat2.isWinner()) { this.scene.start('GameOver'); };
       this.ball.kickOff()
     } else if (this.ball.isOutRight()) {
       this.bat1.score += 1;
       this.player1Score.destroy()
       this.player1Score = this.add.image(340, 83, `digit0${this.bat1.score}`);
+      if (this.bat2.isWinner()) { this.scene.start('GameOver'); };
       this.ball.kickOff()
     } else {
       this.ball.update()

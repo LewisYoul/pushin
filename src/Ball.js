@@ -14,17 +14,11 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
     this.setSize(width, height)
   }
 
-  // increaseVelocity() {
-  //   console.log('velocity', this.body.velocity.normalize())
-  //   this.body.velocity.normalize().scale(1000);
-  // }
-
   kickOff() {
     this.setPosition(400, 240);
   }
 
   collideWithBat(bat) {
-      console.log('bat', bat, 'ball', this)
     const vector = this.body.velocity.clone()
     
     if ((this.y <= (bat.y + 20)) && (this.y >= bat.y - 20)) {
