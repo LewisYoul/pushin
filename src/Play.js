@@ -19,6 +19,7 @@ export default class Play extends Phaser.Scene {
   }
 
   create () {
+      console.log('new')
       this.add.image(400, 240, 'table');
       this.player1Score = this.add.image(340, 83, 'digit00');
       this.player2Score = this.add.image(460, 83, 'digit00')
