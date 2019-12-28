@@ -5,7 +5,11 @@ import Ball from './Ball';
 export default class Play extends Phaser.Scene {
 	constructor() {
 		super('Play')
-	}
+  }
+
+  init(data) {
+    this.numPlayers = data.numPlayers
+  }
 
 	preload () {
     this.load.image('table', 'src/assets/images/table.png');
@@ -19,20 +23,32 @@ export default class Play extends Phaser.Scene {
   }
 
   create () {
-      console.log('new')
       this.add.image(400, 240, 'table');
       this.player1Score = this.add.image(340, 83, 'digit00');
       this.player2Score = this.add.image(460, 83, 'digit00')
-      this.bat1 = new Bat(this, 40, 240, 'left_bat')
-      this.bat2 = new Bat(this, 760, 240, 'right_bat')
+
+      this.keys = this.input.keyboard.addKeys({
+        up: 'up',
+        down: 'down',
+        space: 'space',
+        w: 'W',
+        s: 'S'
+      })
+
+      if (this.numPlayers === 1) {
+        this.bat1 = new Bat(this, 40, 240, 'left_bat', { up: this.keys.up, down: this.keys.down })
+        this.bat2 = new Bat(this, 760, 240, 'right_bat', { up: this.keys.w, down: this.keys.s })
+      } else if (this.numPlayers === 2) {
+        this.bat1 = new Bat(this, 40, 240, 'left_bat', { up: this.keys.w, down: this.keys.s })
+        this.bat2 = new Bat(this, 760, 240, 'right_bat', { up: this.keys.up, down: this.keys.down })
+      }
+
       this.ball = new Ball(this, 400, 240, 'ball')
       this.objects = [this.bat1, this.bat2, this.ball]
       this.halfWidth = 400;
       this.halfHeight = 240;
       this.physics.add.collider(this.ball, this.bat1, this.collideBall, null, this);
       this.physics.add.collider(this.ball, this.bat2, this.collideBall, null, this);
-
-      this.keys = this.input.keyboard.createCursorKeys();
 
       this.physics.world.checkCollision.left = false;
       this.physics.world.checkCollision.right = false;

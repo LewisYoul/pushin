@@ -3,6 +3,7 @@ import Phaser from "phaser";
 export default class MainMenu extends Phaser.Scene {
 	constructor() {
 		super('MainMenu')
+		this.numPlayers = 1;
 	}
 
 	preload() {
@@ -18,19 +19,31 @@ export default class MainMenu extends Phaser.Scene {
 		this.add.image(400, 240, 'table');
 		this.add.image(40, 240, 'left_bat');
 		this.add.image(760, 240, 'right_bat');
-		this.menu0 = this.add.image(400, 240, 'menu0')
-		this.menu1 = this.add.image(400, 240, 'menu1').setVisible(false)
+		this.menu0 = this.add.image(400, 240, 'menu0');
+		this.menu1 = this.add.image(400, 240, 'menu1').setVisible(false);
+		this.menus = [this.menu0, this.menu1];
 	}
 
 	update() {
-		if (this.keys.space.isDown) {
-			this.scene.start('Play');
-		} else if (this.keys.down.isDown && this.menu0.visible) {
-			this.menu0.setVisible(false);
-			this.menu1.setVisible(true);
-		} else if (this.keys.up.isDown && this.menu1.visible) {
-			this.menu0.setVisible(true);
-			this.menu1.setVisible(false);
+		this.keys.space.isDown ? this.startGame() : this.toggleMenu();
+	}
+
+	startGame() {
+		this.scene.start('Play', { numPlayers: this.numPlayers });
+	}
+
+	toggleMenu() {
+		if (this.shouldToggleMenu()) {
+			this.toggleVisibleMenu();
+			this.numPlayers = this.numPlayers === 1 ? 2 : 1;
 		}
+	}
+
+	shouldToggleMenu() {
+		return (this.keys.down.isDown && this.menu0.visible) || (this.keys.up.isDown && this.menu1.visible);
+	}
+
+	toggleVisibleMenu() {
+		this.menus.forEach(menu => menu.setVisible(!menu.visible));
 	}
 }
