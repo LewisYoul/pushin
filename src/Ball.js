@@ -21,34 +21,19 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
 
   collideWithBat(bat) {
     this.increaseSpeed();
-    const vector = this.body.velocity.clone()
-    
-    if ((this.y <= (bat.y + 20)) && (this.y >= bat.y - 20)) { // ball is in center of bat
-      const dx = vector.x
-      const dy = (vector.y / 2)
+    const vector = this.body.velocity.clone() // Clone the vector of the ball so we have reference to it
+    const differenceY = this.y - bat.y; // Determine how far from the center of the bat the ball is
 
-      const length = Math.hypot(dx, dy)
+    let dx = vector.x / this.speed // Reduce the scale of the vector back to 1 as it is scaled each time to speed the ball up
+    let dy = vector.y / this.speed
+    dy += differenceY / 120; // Divide the difference by the length of the bat and add the result to the y vector
+    dy = Math.min(Math.max(dy, -1), 1) // Ensure that the vector y value is always between -1 and 1
 
-      const xvec = dx / length;
-      const yvec = dy / length;
-      this.body.velocity.set(xvec, yvec).scale(this.speed)
-    } else if (this.y < (bat.y + 20)) { // ball is at top of bat
-      const dx = bat.isLeft ? 1 : -1;
-      const dy = -0.5
-      const length = Math.hypot(dx, dy)
+    const length = Math.hypot(dx, dy)
+    const xvec = dx / length
+    const yvec = dy / length // Create a unit bector from the calculated vector
 
-      const xvec = dx / length;
-      const yvec = dy / length;
-      this.body.velocity.set(xvec, yvec).scale(this.speed)
-    } else if (this.y > (bat.y - 20)) { // ball is at bottom of bat
-      const dx = bat.isLeft ? 1 : -1;
-      const dy = 0.5
-      const length = Math.hypot(dx, dy)
-
-      const xvec = dx / length;
-      const yvec = dy / length;
-      this.body.velocity.set(xvec, yvec).scale(this.speed)
-    }
+    this.body.velocity.set(xvec, yvec).scale(this.speed) // Set the unit vector on the ball and scale it according to the speed the ball should be at
   }
 
   isOutLeft () {
