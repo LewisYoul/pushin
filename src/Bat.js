@@ -29,7 +29,7 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
       const xDistance = Math.abs(ball.x - this.x)
       const targetY1 = 240;
       const targetY2 = ball.y + this.aiOffset;
-      const weight1 = Math.min(1, xDistance / 240); //returns 1 if the ball is on the opposite side of the screen as the AI bat
+      const weight1 = Math.min(1, xDistance / 360); //returns 1 if the ball is on the opposite side of the screen as the AI bat
       const weight2 = 1 - weight1; // returns 0 if the ball is on the opposite side of the screen to the AI bat
       const targetY = (weight1 * targetY1) + (weight2 * targetY2);
 
