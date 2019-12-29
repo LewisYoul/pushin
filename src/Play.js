@@ -37,7 +37,7 @@ export default class Play extends Phaser.Scene {
 
       if (this.numPlayers === 1) {
         this.bat1 = new Bat(this, 40, 240, 'left_bat', { up: this.keys.up, down: this.keys.down })
-        this.bat2 = new Bat(this, 760, 240, 'right_bat', { up: this.keys.w, down: this.keys.s })
+        this.bat2 = new Bat(this, 760, 240, 'right_bat')
       } else if (this.numPlayers === 2) {
         this.bat1 = new Bat(this, 40, 240, 'left_bat', { up: this.keys.w, down: this.keys.s })
         this.bat2 = new Bat(this, 760, 240, 'right_bat', { up: this.keys.up, down: this.keys.down })
@@ -69,7 +69,7 @@ export default class Play extends Phaser.Scene {
       this.ball.kickOff()
     } else {
       this.ball.update()
-      this.objects.forEach(object => object.update(this.keys));
+      this.objects.forEach(object => object.update(this.ball));
     }
   }
 
