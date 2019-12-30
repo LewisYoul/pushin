@@ -26,6 +26,7 @@ export default class Play extends Phaser.Scene {
   update () {
     if (this.ball.isOutLeft()) {
       this.bat2.score += 1;
+      this.bat1.displayImage('score', 12)
       this.player2Score.destroy()
       if (this.bat2.isWinner()) { this.scene.start('GameOver'); };
       this.player2Score = this.add.image(460, 83, `digit0${this.bat2.score}`);
@@ -49,7 +50,11 @@ export default class Play extends Phaser.Scene {
   loadImages() {
     this.load.image('table', 'src/assets/images/table.png');
     this.load.image('left_bat', 'src/assets/images/bat00.png');
+    this.load.image('left_bat_hit', 'src/assets/images/bat01.png');
+    this.load.image('left_bat_score', 'src/assets/images/bat02.png');
     this.load.image('right_bat', 'src/assets/images/bat10.png');
+    this.load.image('right_bat_hit', 'src/assets/images/bat11.png');
+    this.load.image('right_bat_score', 'src/assets/images/bat12.png');
     this.load.image('ball', 'src/assets/images/ball.png');
     for (let i = 0; i < 10; i++) {
       this.load.image(`digit0${i}`, `src/assets/images/digit0${i}.png`);
@@ -106,6 +111,7 @@ export default class Play extends Phaser.Scene {
   }
 
   collideBall(ball, bat) {
+    bat.displayImage('hit')
     new Impact(this, ball.x, ball.y, 'impact0');
     ball.collideWithBat(bat)
   }

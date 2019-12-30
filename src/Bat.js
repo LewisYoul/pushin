@@ -7,6 +7,7 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this)
     this.isLeft = (x < 400);
     this.speed = 6;
+    this.position = key
     this.halfSpeed = this.speed / 2;
     this.score = 0;
     this.aiOffset = 0;
@@ -15,10 +16,14 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
     this.setCollideWorldBounds(true);
     this.setImmovable(1)
     this.setSize(width, height)
+    this.time = 0;
+
   }
 
 
   update(ball) {
+    this.countDownTimer();
+
     let movement = 0;
     if (this.keys) {
       if (this.keys.up.isDown) { movement = -this.speed; };
@@ -45,5 +50,18 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
 
   isWinner() {
     return this.score >= 10;
+  }
+
+  countDownTimer() {
+    if (this.timer > 0) {
+      this.timer--;
+    } else if (this.texture.key != this.position){
+      this.setTexture(this.position)
+    }
+  }
+
+  displayImage(type, time = 4) {
+    this.timer = time;
+    this.setTexture(`${this.position}_${type}`)
   }
 }
