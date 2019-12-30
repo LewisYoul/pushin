@@ -21,6 +21,7 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
 
   collideWithBat(bat) {
     this.increaseSpeed();
+    this.playCollisionSound();
     const vector = this.body.velocity.clone() // Clone the vector of the ball so we have reference to it
     const differenceY = this.y - bat.y; // Determine how far from the center of the bat the ball is
 
@@ -50,5 +51,17 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
 
   increaseSpeed() {
     this.speed += 50;
+  }
+
+  playCollisionSound() {
+    if (this.speed < 600) {
+      this.scene.sound.play('hit_slow0')
+    } else if (this.speed < 850) {
+      this.scene.sound.play('hit_medium0')
+    } else if (this.speed < 1100) {
+      this.scene.sound.play('hit_fast0')
+    } else {
+      this.scene.sound.play('hit_veryfast0')
+    }
   }
 }

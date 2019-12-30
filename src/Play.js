@@ -16,10 +16,15 @@ export default class Play extends Phaser.Scene {
     this.load.image('left_bat', 'src/assets/images/bat00.png');
     this.load.image('right_bat', 'src/assets/images/bat10.png');
     this.load.image('ball', 'src/assets/images/ball.png');
-
     for (let i = 0; i < 10; i++) {
       this.load.image(`digit0${i}`, `src/assets/images/digit0${i}.png`);
     }
+
+    this.load.audio('hit_slow0', 'src/assets/sounds/hit_slow0.ogg')
+    this.load.audio('hit_medium0', 'src/assets/sounds/hit_medium0.ogg')
+    this.load.audio('hit_fast0', 'src/assets/sounds/hit_fast0.ogg')
+    this.load.audio('hit_veryfast0', 'src/assets/sounds/hit_veryfast0.ogg')
+    this.load.audio('hit_synth0', 'src/assets/sounds/hit_synth0.ogg')
   }
 
   create () {
