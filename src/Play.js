@@ -5,7 +5,8 @@ import Impact from './Impact';
 
 export default class Play extends Phaser.Scene {
 	constructor() {
-		super('Play')
+    super('Play')
+    this.timer = 0;
   }
 
   init(data) {
@@ -27,17 +28,27 @@ export default class Play extends Phaser.Scene {
     if (this.ball.isOutLeft()) {
       this.bat2.score += 1;
       this.bat1.displayImage('score', 12)
+      this.scoreEffect = this.add.image(400, 240, 'effect0')
+      this.timer = 12;
       this.player2Score.destroy()
       if (this.bat2.isWinner()) { this.scene.start('GameOver'); };
       this.player2Score = this.add.image(460, 83, `digit0${this.bat2.score}`);
       this.ball.kickOff()
     } else if (this.ball.isOutRight()) {
       this.bat1.score += 1;
+      this.bat2.displayImage('score', 12)
       this.player1Score.destroy()
+      this.scoreEffect = this.add.image(400, 240, 'effect1')
+      this.timer = 12;
       if (this.bat1.isWinner()) { this.scene.start('GameOver'); };
       this.player1Score = this.add.image(340, 83, `digit0${this.bat1.score}`);
       this.ball.kickOff()
     } else {
+      if (this.timer > 0) {
+        this.timer--;
+      } else if (this.scoreEffect){
+        this.scoreEffect.destroy();
+      }
       this.objects.forEach(obj => obj.update(this.ball));
     }
   }
@@ -49,6 +60,8 @@ export default class Play extends Phaser.Scene {
 
   loadImages() {
     this.load.image('table', 'src/assets/images/table.png');
+    this.load.image('effect0', 'src/assets/images/effect0.png');
+    this.load.image('effect1', 'src/assets/images/effect1.png');
     this.load.image('left_bat', 'src/assets/images/bat00.png');
     this.load.image('left_bat_hit', 'src/assets/images/bat01.png');
     this.load.image('left_bat_score', 'src/assets/images/bat02.png');
@@ -92,14 +105,14 @@ export default class Play extends Phaser.Scene {
 
   createObjects() {
     if (this.numPlayers === 1) {
-      this.bat1 = new Bat(this, 40, 240, 'left_bat', { up: this.keys.up, down: this.keys.down })
-      this.bat2 = new Bat(this, 760, 240, 'right_bat')
+      this.bat1 = new Bat(this, 40, 240, 'left_bat', { up: this.keys.up, down: this.keys.down }).setDepth(1);
+      this.bat2 = new Bat(this, 760, 240, 'right_bat').setDepth(1);
     } else if (this.numPlayers === 2) {
-      this.bat1 = new Bat(this, 40, 240, 'left_bat', { up: this.keys.w, down: this.keys.s })
-      this.bat2 = new Bat(this, 760, 240, 'right_bat', { up: this.keys.up, down: this.keys.down })
+      this.bat1 = new Bat(this, 40, 240, 'left_bat', { up: this.keys.w, down: this.keys.s }).setDepth(1);
+      this.bat2 = new Bat(this, 760, 240, 'right_bat', { up: this.keys.up, down: this.keys.down }).setDepth(1);
     }
 
-    this.ball = new Ball(this, 400, 240, 'ball')
+    this.ball = new Ball(this, 400, 240, 'ball').setDepth(1);
     this.objects = [this.bat1, this.bat2, this.ball]
   }
 
