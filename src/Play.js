@@ -24,24 +24,23 @@ export default class Play extends Phaser.Scene {
     this.addColliders();
   }
 
+  scoreGoal(attacker, defender, effect) {
+    this[attacker].score++;
+    this[defender].displayImage('score', 12);
+    this.scoreEffect = this.add.image(400, 240, effect)
+    this.timer = 12;
+    if (this[attacker].isWinner()) { this.scene.start('GameOver'); };
+    this[`${attacker}Score`].destroy();
+    this[`${attacker}Score`] = this.add.image(460, 83, `digit0${this[attacker].score}`);
+  }
+
   update () {
-    if (this.ball.isOutLeft()) {
-      this.bat2.score += 1;
-      this.bat1.displayImage('score', 12)
-      this.scoreEffect = this.add.image(400, 240, 'effect0')
-      this.timer = 12;
-      this.player2Score.destroy()
-      if (this.bat2.isWinner()) { this.scene.start('GameOver'); };
-      this.player2Score = this.add.image(460, 83, `digit0${this.bat2.score}`);
-      this.ball.kickOff()
-    } else if (this.ball.isOutRight()) {
-      this.bat1.score += 1;
-      this.bat2.displayImage('score', 12)
-      this.player1Score.destroy()
-      this.scoreEffect = this.add.image(400, 240, 'effect1')
-      this.timer = 12;
-      if (this.bat1.isWinner()) { this.scene.start('GameOver'); };
-      this.player1Score = this.add.image(340, 83, `digit0${this.bat1.score}`);
+    if (this.ball.isOut()) {
+      if (this.ball.isOutLeft()) {
+        this.scoreGoal('bat2', 'bat1', 'effect0')
+      } else {
+        this.scoreGoal('bat2', 'bat1', 'effect1')
+      }
       this.ball.kickOff()
     } else {
       if (this.timer > 0) {
@@ -99,8 +98,8 @@ export default class Play extends Phaser.Scene {
     this.halfWidth = 400;
     this.halfHeight = 240;
     this.add.image(400, 240, 'table');
-    this.player1Score = this.add.image(340, 83, 'digit00');
-    this.player2Score = this.add.image(460, 83, 'digit00');
+    this.bat1Score = this.add.image(340, 83, 'digit00');
+    this.bat2Score = this.add.image(460, 83, 'digit00');
   }
 
   createObjects() {

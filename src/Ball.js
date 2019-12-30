@@ -37,6 +37,10 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
     this.body.velocity.set(xvec, yvec).scale(this.speed) // Set the unit vector on the ball and scale it according to the speed the ball should be at
   }
 
+  isOut() {
+    return this.isOutLeft() || this.isOutRight()
+  }
+
   isOutLeft () {
     const worldBounds = this.scene.physics.world.bounds;
 
