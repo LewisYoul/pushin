@@ -28,10 +28,15 @@ export default class Play extends Phaser.Scene {
     this[attacker].score++;
     this[defender].displayImage('score', 12);
     this.scoreEffect = this.add.image(400, 240, effect)
+    let position;
+
+    attacker === 'bat1' ? position = [340, 83] : position = [460, 83];
+
+    this.pointEffect = this.add.image(...position, `${attacker}_digit${this[attacker].score}`);
     this.timer = 12;
     if (this[attacker].isWinner()) { this.scene.start('GameOver'); };
     this[`${attacker}Score`].destroy();
-    this[`${attacker}Score`] = this.add.image(460, 83, `digit0${this[attacker].score}`);
+    this[`${attacker}Score`] = this.add.image(...position, `digit0${this[attacker].score}`);
   }
 
   update () {
@@ -39,14 +44,15 @@ export default class Play extends Phaser.Scene {
       if (this.ball.isOutLeft()) {
         this.scoreGoal('bat2', 'bat1', 'effect0')
       } else {
-        this.scoreGoal('bat2', 'bat1', 'effect1')
+        this.scoreGoal('bat1', 'bat2', 'effect1')
       }
       this.ball.kickOff()
     } else {
       if (this.timer > 0) {
         this.timer--;
-      } else if (this.scoreEffect){
+      } else if (this.scoreEffect || this.pointEffect){
         this.scoreEffect.destroy();
+        this.pointEffect.destroy();
       }
       this.objects.forEach(obj => obj.update(this.ball));
     }
@@ -73,6 +79,10 @@ export default class Play extends Phaser.Scene {
     };
     for (let i = 0; i < 5; i++) {
       this.load.image(`impact${i}`, `src/assets/images/impact${i}.png`);
+    };
+    for (let i = 1; i < 10; i++) {
+      this.load.image(`bat2_digit${i}`, `src/assets/images/digit1${i}.png`);
+      this.load.image(`bat1_digit${i}`, `src/assets/images/digit2${i}.png`);
     };
   }
 
