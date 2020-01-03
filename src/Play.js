@@ -25,6 +25,7 @@ export default class Play extends Phaser.Scene {
   }
 
   scoreGoal(attacker, defender, effect) {
+    this.sound.play('score_goal0');
     this[attacker].score++;
     this[defender].displayImage('score', 12);
     this.scoreEffect = this.add.image(400, 240, effect)
@@ -92,6 +93,7 @@ export default class Play extends Phaser.Scene {
     this.load.audio('hit_fast0', 'src/assets/sounds/hit_fast0.ogg');
     this.load.audio('hit_veryfast0', 'src/assets/sounds/hit_veryfast0.ogg');
     this.load.audio('hit_synth0', 'src/assets/sounds/hit_synth0.ogg');
+    this.load.audio('score_goal0', 'src/assets/sounds/score_goal0.ogg');
   }
 
   configureInput() {
@@ -126,6 +128,8 @@ export default class Play extends Phaser.Scene {
   }
 
   addColliders() {
+    this.onWorldBounds = true
+    this.physics.world.on('worldbounds', this.triggerWorldBounds, this);
     this.physics.add.collider(this.ball, this.bat1, this.collideBall, null, this);
     this.physics.add.collider(this.ball, this.bat2, this.collideBall, null, this);
     this.physics.world.checkCollision.left = false;
@@ -133,8 +137,11 @@ export default class Play extends Phaser.Scene {
   }
 
   collideBall(ball, bat) {
-    bat.displayImage('hit')
     new Impact(this, ball.x, ball.y, 'impact0');
     ball.collideWithBat(bat)
+  }
+
+  triggerWorldBounds() {
+    this.sound.play('hit_synth0');
   }
 }

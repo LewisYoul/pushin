@@ -8,6 +8,7 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
     this.speed = 300;
     this.setVelocity(this.speed, 0);
     this.setCollideWorldBounds(true);
+    this.body.onWorldBounds = true
     this.setBounce(1)
     this.setSize(width, height)
   }

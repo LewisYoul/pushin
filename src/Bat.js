@@ -6,7 +6,7 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this)
     this.isLeft = (x < 400);
-    this.speed = 6;
+    this.speed = 8;
     this.position = key
     this.halfSpeed = this.speed / 2;
     this.score = 0;

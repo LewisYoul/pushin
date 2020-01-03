@@ -12,6 +12,9 @@ export default class MainMenu extends Phaser.Scene {
 		this.load.image('right_bat', 'src/assets/images/bat10.png');
 		this.load.image('menu0', 'src/assets/images/menu0.png');
 		this.load.image('menu1', 'src/assets/images/menu1.png');
+
+		this.load.audio('up', 'src/assets/sounds/up.ogg');
+		this.load.audio('down', 'src/assets/sounds/down.ogg');
 	}
 
 	create() {
@@ -44,6 +47,7 @@ export default class MainMenu extends Phaser.Scene {
 	}
 
 	toggleVisibleMenu() {
+		this.keys.down.isDown ? this.sound.play('down') : this.sound.play('up');
 		this.menus.forEach(menu => menu.setVisible(!menu.visible));
 	}
 }
