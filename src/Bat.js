@@ -17,7 +17,7 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
     this.setImmovable(1)
     this.setSize(width, height)
     this.time = 0;
-
+    this.setDepth(1);
   }
 
 
@@ -29,7 +29,7 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
       if (this.keys.up.isDown) { movement = -this.speed; };
       if (this.keys.down.isDown) { movement = this.speed; };
 
-      this.y = Math.min(400, Math.max(80, this.y + movement))
+      this.y = Math.min(410, Math.max(70, this.y + movement))
     } else {
       const xDistance = Math.abs(ball.x - this.x)
       const targetY1 = 240;

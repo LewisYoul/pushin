@@ -2,17 +2,8 @@ import Phaser from "phaser";
 
 
 export default class GameOver extends Phaser.Scene {
-  static get ROOT_PATH() { return 'src/assets/images'; };
-  static get IMAGES() { return ['table', 'over']; };
-
   constructor() {
     super('GameOver')
-    this.rootPath = 'src/assets/images';
-    this.images = ['table', 'over'];
-	}
-
-	preload() {
-    this.images.forEach(img => this.load.image(img, `${this.rootPath}/${img}.png`))
 	}
 
 	create() {
