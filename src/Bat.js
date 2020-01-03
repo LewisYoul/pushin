@@ -48,6 +48,14 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
+  changeOffset() {
+    this.aiOffset = this.integerBetween(-50, 50);
+  }
+
+  integerBetween(min, max) {
+    return Math.floor(Math.random() * ((max + 1) - min) + min)
+  }
+
   isWinner() {
     return this.score >= 10;
   }
