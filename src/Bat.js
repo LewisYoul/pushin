@@ -5,7 +5,7 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, key);
     scene.add.existing(this);
     scene.physics.add.existing(this)
-    this.isLeft = (x < 400);
+    this.isLeft = (x < scene.halfWidth);
     this.speed = 8;
     this.position = key
     this.halfSpeed = this.speed / 2;
@@ -32,7 +32,7 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
       this.y = Math.min(410, Math.max(70, this.y + movement))
     } else {
       const xDistance = Math.abs(ball.x - this.x)
-      const targetY1 = 240;
+      const targetY1 = this.scene.halfWidth;
       const targetY2 = ball.y + this.aiOffset;
       const weight1 = Math.min(1, xDistance / 360); //returns 1 if the ball is on the opposite side of the screen as the AI bat
       const weight2 = 1 - weight1; // returns 0 if the ball is on the opposite side of the screen to the AI bat
@@ -44,7 +44,7 @@ export default class Bat extends Phaser.Physics.Arcade.Sprite {
         movement = this.speed;
       }
 
-      this.y = Math.min(400, Math.max(80, this.y + movement))
+      this.y = Math.min(this.scene.halfHeight, Math.max(80, this.y + movement))
     }
   }
 

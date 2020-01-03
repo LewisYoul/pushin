@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 
 export default class Impact extends Phaser.Physics.Arcade.Sprite {
-	constructor(scene, x, y, key) {
+	constructor(scene, x, y, key = 'impact0') {
     super(scene, x, y, key)
     scene.add.existing(this); // add the impact to the scene
     scene.objects.push(this); // add the impact to the list of objects to update
