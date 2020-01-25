@@ -8,7 +8,10 @@ var config = {
   height: 600,
   parent: 'game',
   physics: {
-      default: 'matter'
+      default: 'matter',
+      matter: {
+        // debug: true
+    }
   },
   scene: {
       preload: preload,
@@ -29,6 +32,7 @@ var config = {
 let game = new Phaser.Game(config);
 
 function preload() {
+  this.load.image('circle', 'src/assets/images/circle.png')
   this.load.spritesheet(
     "player",
     "src/assets/images/player.png",
@@ -42,13 +46,22 @@ function preload() {
 }
 
 function create() {
-  this.matter.world.setBounds();
-  this.player = new Player(this, 400, 300);
+  this.circ = this.matter.add.image(400, 100, 'circle');
+
+    //  Change the body to a Circle with a radius of 48px
+    this.circ.setBody({
+        type: 'circle',
+        radius: 16
+    });
+    this.circ.setBounce(1);
+    this.matter.world.setBounds();
+    this.player = new Player(this, 400, 600);
 
   this.cursors = this.input.keyboard.createCursorKeys();
   this.matter.world.on('collisionstart', function (event,a,b) {
-
-    // console.log('start', event, a, b)
+    // if ((a.id === 2 && b.id === 8) || (a.id === 8 && a === this.player)) {
+    //   console.log('header!')
+    // }
 
   });
 

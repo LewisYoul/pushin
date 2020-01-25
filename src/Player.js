@@ -11,7 +11,7 @@ export default class Player {
     this.sprite = scene.matter.add.sprite(0, 0, "player", 0);
     this.isTouching = { left: false, right: false, ground: false };
     const { width: w, height: h } = this.sprite;
-    const mainBody = Bodies.rectangle(0, 0, w * 0.6, h, { chamfer: { radius: 10 } });
+    const mainBody = Bodies.rectangle(0, 0, w * 0.6, h, { chamfer: { radius: 9 } });
     console.log('w', w)
     this.sensors = {
       bottom: Bodies.rectangle(0, h * 0.5, w * 0.25, 2, { isSensor: true }),
@@ -22,7 +22,7 @@ export default class Player {
       parts: [mainBody, this.sensors.bottom, this.sensors.left, this.sensors.right],
       frictionStatic: 0,
       frictionAir: 0.02,
-      friction: 0.1
+      friction: 0.09
     });
     this.sprite
       .setExistingBody(compoundBody)
@@ -88,7 +88,7 @@ export default class Player {
     else if (this.sprite.body.velocity.x < -7) this.sprite.setVelocityX(-7);
 
     if (this.scene.cursors.up.isDown && this.canJump && this.isTouching.ground) {
-      this.sprite.setVelocityY(-11);
+      this.sprite.setVelocityY(-10);
 
       // Add a slight delay between jumps since the bottom sensor will still collide for a few
       // frames after a jump is initiated
